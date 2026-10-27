@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
-import { ChevronDown, ArrowUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, ArrowUp, ArrowDown } from 'lucide-react';
 import { fastSmoothScrollTo } from '../utils/smoothScroll';
 
 export interface PageItem {
@@ -21,13 +21,24 @@ export default function DesktopPageNav() {
   const [activeId, setActiveId] = useState<string>('about');
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [scrollPercent, setScrollPercent] = useState(0);
-  const { scrollYProgress } = useScroll();
+  const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
+  const { scrollYProgress, scrollY } = useScroll();
 
   useEffect(() => {
     return scrollYProgress.on('change', (v) => {
       setScrollPercent(Math.round(v * 100));
     });
   }, [scrollYProgress]);
+
+  useEffect(() => {
+    return scrollY.on('change', (current) => {
+      const prev = scrollY.getPrevious() ?? 0;
+      const diff = current - prev;
+      if (Math.abs(diff) > 4) {
+        setScrollDirection(diff > 0 ? 'down' : 'up');
+      }
+    });
+  }, [scrollY]);
 
   useEffect(() => {
     const observerOptions = {
@@ -55,11 +66,20 @@ export default function DesktopPageNav() {
   }, []);
 
   const currentIndex = pages.findIndex((p) => p.id === activeId);
+  const prevSection = currentIndex > 0 ? pages[currentIndex - 1] : null;
   const nextSection = currentIndex < pages.length - 1 ? pages[currentIndex + 1] : null;
 
   const scrollToNext = () => {
     if (nextSection) {
       fastSmoothScrollTo(nextSection.id);
+    } else {
+      fastSmoothScrollTo(0);
+    }
+  };
+
+  const scrollToPrev = () => {
+    if (prevSection) {
+      fastSmoothScrollTo(prevSection.id);
     } else {
       fastSmoothScrollTo(0);
     }
@@ -75,12 +95,29 @@ export default function DesktopPageNav() {
         aria-label="Desktop Section Navigation"
         className="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-3 select-none pointer-events-auto"
       >
-        {/* Background Glassmorphic Architectural Bar */}
+        {/* Background Glassmorphic Architectural Bar with Reverse Scroll Controls */}
         <div className="flex flex-col items-center gap-2 p-2 rounded-full glass-panel border border-[var(--theme-glass-border)] shadow-2xl relative">
-          {/* Scroll progress vertical rail */}
-          <div className="absolute top-4 bottom-14 left-1/2 -translate-x-1/2 w-[1px] bg-[var(--theme-glass-border)] pointer-events-none" />
+          {/* Reverse Scroll Up (Previous Section) Button */}
+          <motion.button
+            onClick={scrollToPrev}
+            title={prevSection ? `Reverse Scroll up to ${prevSection.label}` : 'Top of Page'}
+            aria-label="Previous section"
+            className={`relative w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-md cursor-pointer focus:outline-none ${
+              prevSection
+                ? 'glass-badge text-[var(--theme-text-main)] hover:bg-[var(--theme-accent)] hover:text-[var(--theme-accent-contrast)] border border-[var(--theme-glass-border)]'
+                : 'opacity-30 cursor-not-allowed glass-badge text-[var(--theme-text-muted)]'
+            }`}
+            whileHover={prevSection ? { scale: 1.15 } : {}}
+            whileTap={prevSection ? { scale: 0.92 } : {}}
+            disabled={!prevSection}
+          >
+            <ChevronUp className="w-4 h-4 stroke-[2.5]" />
+          </motion.button>
 
-          {pages.map((page, index) => {
+          {/* Progress vertical rail */}
+          <div className="w-4 h-px bg-[var(--theme-glass-border)] my-0.5" />
+
+          {pages.map((page) => {
             const isActive = page.id === activeId;
             return (
               <div
@@ -128,15 +165,15 @@ export default function DesktopPageNav() {
           })}
 
           {/* Divider */}
-          <div className="w-4 h-px bg-[var(--theme-glass-border)] my-1" />
+          <div className="w-4 h-px bg-[var(--theme-glass-border)] my-0.5" />
 
-          {/* Animated Down / Next Page Button with Glass Ring */}
+          {/* Down / Next Page Button */}
           <motion.button
             onClick={scrollToNext}
-            title={nextSection ? `Scroll to ${nextSection.label}` : 'Back to Top'}
+            title={nextSection ? `Scroll down to ${nextSection.label}` : 'Back to Top'}
             aria-label="Next section"
             className="relative w-8 h-8 rounded-full bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)] flex items-center justify-center hover:brightness-110 transition-all shadow-md cursor-pointer focus:outline-none"
-            whileHover={{ scale: 1.12 }}
+            whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.92 }}
           >
             {nextSection ? (
@@ -147,8 +184,13 @@ export default function DesktopPageNav() {
           </motion.button>
         </div>
 
-        {/* Floating active page indicator & live scroll % pill */}
+        {/* Floating active page indicator & live scroll % pill with direction indicator */}
         <div className="flex items-center gap-1.5 text-[9px] font-mono tracking-widest text-[var(--theme-text-muted)] font-bold glass-badge px-3 py-1 rounded-full border border-[var(--theme-glass-border)] shadow-md">
+          {scrollDirection === 'up' ? (
+            <ArrowUp className="w-3 h-3 text-[var(--theme-accent)] animate-bounce" />
+          ) : (
+            <ArrowDown className="w-3 h-3 text-[var(--theme-text-muted)]" />
+          )}
           <span className="text-[var(--theme-accent)]">{pages[currentIndex]?.number || '01'}</span>
           <span>/</span>
           <span>{pages[pages.length - 1].number}</span>
@@ -157,7 +199,7 @@ export default function DesktopPageNav() {
         </div>
       </aside>
 
-      {/* Mobile Floating Landmark Controller (Visible on screens < xl) */}
+      {/* Mobile Floating Landmark Controller with Dual Direction Controls */}
       <aside
         aria-label="Mobile Section Quick Navigator"
         className="flex xl:hidden fixed bottom-4 right-4 z-40 select-none pointer-events-auto"
@@ -183,7 +225,18 @@ export default function DesktopPageNav() {
           {/* Divider */}
           <div className="w-px h-4 bg-[var(--theme-glass-border)]" />
 
-          {/* Jump / Back to top Button */}
+          {/* Reverse Scroll Up Button */}
+          {prevSection && (
+            <button
+              onClick={scrollToPrev}
+              aria-label={`Reverse scroll to ${prevSection.label}`}
+              className="w-7 h-7 rounded-full glass-badge text-[var(--theme-text-main)] hover:border-[var(--theme-accent)] flex items-center justify-center cursor-pointer active:scale-95 transition-transform shadow-xs"
+            >
+              <ChevronUp className="w-3.5 h-3.5 stroke-[2.5]" />
+            </button>
+          )}
+
+          {/* Jump Down / Next Button */}
           <button
             onClick={scrollToNext}
             aria-label={nextSection ? `Jump to ${nextSection.label}` : 'Back to Top'}

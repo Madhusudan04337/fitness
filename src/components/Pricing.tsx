@@ -129,11 +129,11 @@ export default function Pricing() {
       className="relative w-full py-20 lg:py-28 px-6 lg:px-12 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300"
     >
       <div className="relative max-w-7xl mx-auto flex flex-col items-center">
-        {/* Section Header with Scroll Entrance */}
+        {/* Section Header with Bidirectional Scroll Entrance */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-3xl mb-12"
         >
@@ -179,7 +179,7 @@ export default function Pricing() {
           </div>
         </motion.div>
 
-        {/* 3 Tier Grid with Frosted Glassmorphism and Staggered Scroll Entrance */}
+        {/* 3 Tier Grid with Frosted Glassmorphism and Bidirectional Reverse Scroll Entrance */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl items-stretch mb-16">
           {TIERS.map((tier, index) => {
             const price = billingCycle === 'annual' ? tier.annualPrice : tier.monthlyPrice;
@@ -190,7 +190,7 @@ export default function Pricing() {
                 key={tier.id}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
+                viewport={{ once: false, margin: '-40px' }}
                 transition={{ duration: 0.6, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
                 className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-3xl transition-all duration-300 ${
                   isHighlighted
@@ -278,11 +278,11 @@ export default function Pricing() {
           })}
         </div>
 
-        {/* Bottom Trust Guarantee Strip in Glass Panel */}
+        {/* Bottom Trust Guarantee Strip */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="p-5 rounded-2xl glass-panel border border-[var(--theme-glass-border)] flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-xs font-mono text-[var(--theme-text-muted)]"
         >
@@ -305,7 +305,6 @@ export default function Pricing() {
       <AnimatePresence>
         {selectedTier && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop Blur Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -314,7 +313,6 @@ export default function Pricing() {
               className="fixed inset-0 bg-black/75 backdrop-blur-xl"
             />
 
-            {/* Modal Dialog Box */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}

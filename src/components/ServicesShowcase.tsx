@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Users, Video, Gift, ArrowUpRight } from 'lucide-react';
+import { Users, Video, Gift } from 'lucide-react';
 
 const features = [
   {
@@ -34,7 +34,7 @@ export default function ServicesShowcase() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="inline-block px-3 py-1 rounded-full glass-badge border border-[var(--theme-glass-border)] text-[var(--theme-accent)] text-xs font-mono tracking-[0.25em] mb-4 uppercase font-semibold">
@@ -66,14 +66,14 @@ export default function ServicesShowcase() {
           </div>
         </motion.div>
 
-        {/* Right Side - Glassmorphic Feature Cards with Staggered Scroll Transition */}
+        {/* Right Side - Glassmorphic Feature Cards with Bidirectional Scroll Transition */}
         <div className="flex flex-col gap-4 sm:gap-5">
           {features.map((feature, index) => (
             <motion.div
               key={feature.id}
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
+              viewport={{ once: false, margin: '-40px' }}
               transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="p-6 rounded-2xl glass-card flex items-start gap-4 sm:gap-5 group"
             >

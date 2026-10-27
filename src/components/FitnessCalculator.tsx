@@ -55,11 +55,11 @@ export default function FitnessCalculator() {
   return (
     <section id="calculator" className="py-16 lg:py-24 px-6 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300">
       <div className="max-w-3xl mx-auto">
-        {/* Header Block with Scroll Entrance */}
+        {/* Header Block with Bidirectional Scroll Entrance */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-10"
         >
@@ -78,7 +78,7 @@ export default function FitnessCalculator() {
         <motion.div
           initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="rounded-3xl glass-panel p-6 sm:p-10 shadow-2xl relative overflow-hidden glass-card"
         >

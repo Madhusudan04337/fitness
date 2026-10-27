@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
-import { Menu, X, ArrowUpRight, Compass, HelpCircle, Activity, MessageSquare } from 'lucide-react';
+import { Menu, X, ArrowUpRight, ArrowUp, ArrowDown, Compass, Activity, MessageSquare } from 'lucide-react';
 import ThemeSelector from './ThemeSelector';
 import { fastSmoothScrollTo } from '../utils/smoothScroll';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollPercent, setScrollPercent] = useState(0);
-  const { scrollYProgress } = useScroll();
+  const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
+  const { scrollYProgress, scrollY } = useScroll();
 
   useEffect(() => {
     return scrollYProgress.on('change', (latest) => {
       setScrollPercent(Math.round(latest * 100));
     });
   }, [scrollYProgress]);
+
+  useEffect(() => {
+    return scrollY.on('change', (current) => {
+      const prev = scrollY.getPrevious() ?? 0;
+      const diff = current - prev;
+      if (Math.abs(diff) > 4) {
+        setScrollDirection(diff > 0 ? 'down' : 'up');
+      }
+    });
+  }, [scrollY]);
 
   const hoverEffect = { hover: { scale: 1.03 }, tap: { scale: 0.97 } };
 
@@ -32,7 +43,13 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-8 lg:px-10 py-3.5 glass-panel glass-specular-edge border-b border-[var(--theme-glass-border)] transition-colors duration-300">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-8 lg:px-10 py-3.5 glass-panel glass-specular-edge border-b border-[var(--theme-glass-border)] transition-all duration-300 ${
+          scrollDirection === 'up' && scrollPercent > 5
+            ? 'shadow-[0_4px_30px_var(--theme-accent-glow)] border-b-[var(--theme-accent)]/30'
+            : ''
+        }`}
+      >
         {/* Brand Wordmark */}
         <motion.a
           href="/"
@@ -59,10 +76,17 @@ export default function Header() {
 
         {/* Right Controls: Scroll HUD %, Theme Selector, Desktop CTA, & Mobile Menu Toggle */}
         <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
-          {/* Scroll progress counter pill */}
+          {/* Scroll progress counter pill with reverse scroll animation */}
           <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full glass-badge text-[10px] font-mono tracking-wider text-[var(--theme-text-muted)] border border-[var(--theme-glass-border)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--theme-accent)]" />
+            {scrollDirection === 'up' && scrollPercent > 2 ? (
+              <ArrowUp className="w-3 h-3 text-[var(--theme-accent)] animate-bounce" />
+            ) : (
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--theme-accent)]" />
+            )}
             <span className="tabular-nums font-semibold text-[var(--theme-text-main)]">{scrollPercent}%</span>
+            {scrollDirection === 'up' && scrollPercent > 5 && (
+              <span className="text-[9px] text-[var(--theme-accent)] font-bold uppercase tracking-widest pl-0.5">REV</span>
+            )}
           </div>
 
           <ThemeSelector />
@@ -92,7 +116,7 @@ export default function Header() {
         />
       </header>
 
-      {/* Mobile Navigation Drawer / Dropdown with Glassmorphism */}
+      {/* Mobile Navigation Drawer with Glassmorphism */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

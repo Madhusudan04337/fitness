@@ -31,11 +31,11 @@ export default function FAQ() {
   return (
     <section id="faq" className="py-16 lg:py-24 px-6 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300">
       <div className="max-w-3xl mx-auto">
-        {/* Header Block with Scroll Reveal */}
+        {/* Header Block with Reverse Scroll Reveal */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-12"
         >
@@ -52,7 +52,7 @@ export default function FAQ() {
           </p>
         </motion.div>
 
-        {/* Frosted Glass Accordion List with Staggered Scroll Entrance */}
+        {/* Frosted Glass Accordion List with Bidirectional Reverse Scroll Entrance */}
         <div className="space-y-4">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
@@ -61,7 +61,7 @@ export default function FAQ() {
                 key={index}
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-30px' }}
+                viewport={{ once: false, margin: '-30px' }}
                 transition={{ duration: 0.45, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 className={`rounded-2xl transition-all duration-300 overflow-hidden ${
                   isOpen

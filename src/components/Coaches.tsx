@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Award, ShieldCheck } from 'lucide-react';
+import { Award } from 'lucide-react';
 
 const coaches = [
   {
@@ -33,7 +33,7 @@ export default function Coaches() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row md:items-end justify-between mb-12"
         >
@@ -57,7 +57,7 @@ export default function Coaches() {
               key={coach.name}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
+              viewport={{ once: false, margin: '-40px' }}
               transition={{ duration: 0.6, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
               className="group relative overflow-hidden rounded-3xl glass-card border border-[var(--theme-glass-border)] shadow-xl"
             >

@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowUpRight, Play } from 'lucide-react';
 
 const services = [
@@ -41,14 +41,28 @@ const services = [
 ];
 
 export default function Services() {
+  const containerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  });
+
+  // Reverse parallax drift for sticky left card
+  const stickyFloat = useTransform(scrollYProgress, [0, 1], [-20, 20]);
+
   return (
-    <section id="services" className="py-16 lg:py-24 px-6 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300">
+    <section
+      ref={containerRef}
+      id="services"
+      className="py-16 lg:py-24 px-6 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300"
+    >
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        {/* Left - Sticky Glass Context Card with Parallax */}
+        {/* Left - Sticky Glass Context Card with Bidirectional Scroll Float */}
         <motion.div
+          style={{ y: stickyFloat }}
           initial={{ opacity: 0, x: -35 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="lg:col-span-5 lg:sticky lg:top-28 p-6 sm:p-8 rounded-2xl glass-panel shadow-2xl"
         >
@@ -91,15 +105,15 @@ export default function Services() {
           </div>
         </motion.div>
 
-        {/* Right - Glassmorphic Service Rows with Scroll Triggered Stagger */}
+        {/* Right - Glassmorphic Service Rows with Bidirectional Reverse Scroll Triggers */}
         <div className="lg:col-span-7 flex flex-col gap-5">
           {services.map((service, index) => (
             <motion.div
               key={service.id}
               initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.5, delay: index * 0.09, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: false, margin: '-40px' }}
+              transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
               className="group flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 rounded-2xl glass-card gap-6 cursor-default"
             >
               <div className="flex items-center gap-5 flex-1">

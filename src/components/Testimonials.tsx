@@ -36,11 +36,11 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="py-16 lg:py-24 px-6 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
-        {/* Header with Scroll Entrance */}
+        {/* Header with Bidirectional Scroll Entrance */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-2xl mx-auto mb-14"
         >
@@ -56,14 +56,14 @@ export default function Testimonials() {
           </p>
         </motion.div>
 
-        {/* Testimonials Glass Cards Grid with Staggered Scroll Transition */}
+        {/* Testimonials Glass Cards Grid with Staggered Bidirectional Reverse Scroll Transition */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((test, index) => (
             <motion.div
               key={test.name}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
+              viewport={{ once: false, margin: '-40px' }}
               transition={{ duration: 0.6, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
               className="p-7 sm:p-8 rounded-3xl glass-card flex flex-col justify-between text-left relative overflow-hidden"
             >

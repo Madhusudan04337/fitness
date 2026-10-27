@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import {
   MessageSquare,
   Star,
@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   RefreshCw,
   Sparkles,
+  ChevronDown,
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -68,18 +69,18 @@ export default function FeedbackSection() {
   return (
     <section
       id="feedback"
-      className="relative w-full py-16 lg:py-24 px-4 sm:px-6 lg:px-12 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300"
+      className="relative w-full py-14 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-12 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300"
     >
       <div className="max-w-4xl mx-auto">
-        {/* Section Header with Scroll Entrance */}
+        {/* Section Header with Bidirectional Scroll Entrance */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-2xl mx-auto mb-12"
+          className="text-center max-w-2xl mx-auto mb-10 sm:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-badge border border-[var(--theme-glass-border)] text-xs font-mono tracking-[0.25em] text-[var(--theme-accent)] uppercase mb-3 font-semibold shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-badge border border-[var(--theme-glass-border)] text-xs font-mono tracking-[0.2em] text-[var(--theme-accent)] uppercase mb-3 font-semibold shadow-xs">
             <MessageSquare className="w-3.5 h-3.5" />
             <span>MEMBER COMMUNICATIONS</span>
           </div>
@@ -89,27 +90,45 @@ export default function FeedbackSection() {
             <span className="text-[var(--theme-accent)]">SHAPES OUR FLOOR.</span>
           </h2>
 
-          <p className="text-sm sm:text-base text-[var(--theme-text-muted)] font-light leading-relaxed">
+          <p className="text-xs sm:text-base text-[var(--theme-text-muted)] font-light leading-relaxed">
             Every submission is dispatched directly to our Indiranagar club director and reviewed during our weekly staff meeting.
           </p>
         </motion.div>
 
         {/* Frosted Glass Form Container */}
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
+          viewport={{ once: false, margin: '-40px' }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-3xl glass-panel p-6 sm:p-10 shadow-2xl relative overflow-hidden glass-card text-left"
+          className="rounded-3xl glass-panel p-5 sm:p-10 shadow-2xl relative overflow-hidden glass-card text-left"
         >
           {!submitted ? (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* 1. Category Selection */}
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+              {/* 1. Category Selection: Dropdown on mobile, chips on desktop */}
               <div>
-                <label className="block text-xs font-mono font-bold tracking-widest text-[var(--theme-text-muted)] uppercase mb-2.5">
+                <label className="block text-xs font-mono font-bold tracking-widest text-[var(--theme-text-muted)] uppercase mb-2">
                   1. Focus Department
                 </label>
-                <div className="flex flex-wrap gap-2">
+
+                {/* Mobile Dropdown */}
+                <div className="sm:hidden relative">
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl glass-panel text-xs font-mono font-bold uppercase text-[var(--theme-text-main)] appearance-none cursor-pointer focus:outline-none focus:border-[var(--theme-accent)] pr-10 border border-[var(--theme-glass-border)]"
+                  >
+                    {CATEGORIES.map((cat) => (
+                      <option key={cat} value={cat} className="bg-[var(--theme-surface-solid)] text-[var(--theme-text-main)]">
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--theme-accent)] pointer-events-none" />
+                </div>
+
+                {/* Desktop Tabs */}
+                <div className="hidden sm:flex flex-wrap gap-2">
                   {CATEGORIES.map((cat) => (
                     <button
                       key={cat}
@@ -128,12 +147,12 @@ export default function FeedbackSection() {
               </div>
 
               {/* 2. Rating Selector in Glass Container */}
-              <div className="p-4 sm:p-5 rounded-2xl glass-panel-subtle border border-[var(--theme-glass-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-3.5 sm:p-5 rounded-2xl glass-panel-subtle border border-[var(--theme-glass-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <div className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--theme-text-muted)]">
+                  <div className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-widest text-[var(--theme-text-muted)]">
                     2. Overall Facility Rating
                   </div>
-                  <div className="text-sm text-[var(--theme-text-main)] mt-0.5 font-medium">
+                  <div className="text-xs sm:text-sm text-[var(--theme-text-main)] mt-0.5 font-medium">
                     {rating === 5 && 'Benchmark Standard (Exceptional)'}
                     {rating === 4 && 'Good (Solid performance, slight refinements)'}
                     {rating === 3 && 'Average (Needs attention)'}
@@ -142,7 +161,7 @@ export default function FeedbackSection() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 self-start sm:self-center">
                   {[1, 2, 3, 4, 5].map((star) => {
                     const active = (hoverRating ?? rating) >= star;
                     return (
@@ -156,7 +175,7 @@ export default function FeedbackSection() {
                         aria-label={`Rate ${star} of 5 stars`}
                       >
                         <Star
-                          className={`w-6 h-6 transition-colors ${
+                          className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${
                             active
                               ? 'text-[var(--theme-accent)] fill-[var(--theme-accent)]'
                               : 'text-[var(--theme-text-muted)] opacity-30'
@@ -165,7 +184,7 @@ export default function FeedbackSection() {
                       </button>
                     );
                   })}
-                  <span className="ml-2 font-mono text-sm font-bold text-[var(--theme-text-main)] tabular-nums">
+                  <span className="ml-2 font-mono text-xs sm:text-sm font-bold text-[var(--theme-text-main)] tabular-nums">
                     {rating}.0
                   </span>
                 </div>
@@ -173,10 +192,10 @@ export default function FeedbackSection() {
 
               {/* 3. Quick Tag Chips */}
               <div>
-                <label className="block text-xs font-mono font-bold tracking-widest text-[var(--theme-text-muted)] uppercase mb-2.5">
+                <label className="block text-xs font-mono font-bold tracking-widest text-[var(--theme-text-muted)] uppercase mb-2">
                   3. Key Topics (Click to highlight)
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {PRESET_TAGS.map((tag) => {
                     const isSelected = selectedTags.includes(tag);
                     return (
@@ -184,7 +203,7 @@ export default function FeedbackSection() {
                         key={tag}
                         type="button"
                         onClick={() => toggleTag(tag)}
-                        className={`text-[11px] font-mono px-3 py-1.5 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
+                        className={`text-[10px] sm:text-[11px] font-mono px-2.5 sm:px-3 py-1.5 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
                           isSelected
                             ? 'bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)] border-[var(--theme-accent)] font-semibold shadow-xs'
                             : 'glass-badge text-[var(--theme-text-muted)] hover:text-[var(--theme-text-main)] hover:border-[var(--theme-accent)]'
@@ -199,9 +218,9 @@ export default function FeedbackSection() {
 
               {/* 4. Detailed Feedback Text */}
               <div>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-1.5">
                   <label className="block text-xs font-mono font-bold tracking-widest text-[var(--theme-text-muted)] uppercase">
-                    4. Your Detailed Notes or Suggestions
+                    4. Your Detailed Notes
                   </label>
                   <span className="text-[10px] font-mono text-[var(--theme-text-muted)]">
                     {message.length}/500 chars
@@ -212,15 +231,15 @@ export default function FeedbackSection() {
                   maxLength={500}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell us what worked well or what equipment/amenity could be upgraded. E.g., 'The 4°C cold plunge has been great for leg day recovery, but an extra bench by the Eleiko rack would help...'"
-                  className="w-full p-4 rounded-xl glass-input text-sm text-[var(--theme-text-main)] placeholder-[var(--theme-text-muted)]/50 font-sans leading-relaxed resize-none"
+                  placeholder="Tell us what worked well or what equipment/amenity could be upgraded. E.g., 'The 4°C cold plunge has been great for leg day recovery...'"
+                  className="w-full p-3.5 sm:p-4 rounded-xl glass-input text-xs sm:text-sm text-[var(--theme-text-main)] placeholder-[var(--theme-text-muted)]/50 font-sans leading-relaxed resize-none"
                 />
               </div>
 
               {/* 5. Member Identification (Optional) */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-xs font-mono font-bold uppercase text-[var(--theme-text-muted)] mb-1.5">
+                  <label className="block text-[11px] sm:text-xs font-mono font-bold uppercase text-[var(--theme-text-muted)] mb-1">
                     Your Name (Optional)
                   </label>
                   <input
@@ -228,25 +247,25 @@ export default function FeedbackSection() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Rahul S."
-                    className="w-full px-3.5 py-2.5 rounded-xl glass-input text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs sm:text-sm"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono font-bold uppercase text-[var(--theme-text-muted)] mb-1.5">
+                  <label className="block text-[11px] sm:text-xs font-mono font-bold uppercase text-[var(--theme-text-muted)] mb-1">
                     Email / WhatsApp
                   </label>
                   <input
                     type="text"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="For follow-up response"
-                    className="w-full px-3.5 py-2.5 rounded-xl glass-input text-sm"
+                    placeholder="For follow-up"
+                    className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs sm:text-sm"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono font-bold uppercase text-[var(--theme-text-muted)] mb-1.5">
+                  <label className="block text-[11px] sm:text-xs font-mono font-bold uppercase text-[var(--theme-text-muted)] mb-1">
                     Member ID (Optional)
                   </label>
                   <input
@@ -254,15 +273,15 @@ export default function FeedbackSection() {
                     value={memberId}
                     onChange={(e) => setMemberId(e.target.value)}
                     placeholder="e.g. HF-2024-41"
-                    className="w-full px-3.5 py-2.5 rounded-xl glass-input text-sm font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs sm:text-sm font-mono"
                   />
                 </div>
               </div>
 
               {/* 6. Recommendation Question */}
-              <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-[var(--theme-glass-border)]">
+              <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-t border-[var(--theme-glass-border)]">
                 <span className="text-xs text-[var(--theme-text-muted)] font-mono">
-                  Would you recommend Hyperfit to an athletic peer?
+                  Would you recommend Hyperfit?
                 </span>
                 <div className="flex items-center gap-2">
                   {(['yes', 'neutral', 'no'] as const).map((opt) => (
@@ -285,7 +304,7 @@ export default function FeedbackSection() {
               {/* Submit CTA */}
               <button
                 type="submit"
-                className="w-full py-4 rounded-xl bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)] font-mono font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl shadow-[var(--theme-accent-glow)] cursor-pointer hover:brightness-105 athletic-btn"
+                className="w-full py-3.5 sm:py-4 rounded-xl bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)] font-mono font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl shadow-[var(--theme-accent-glow)] cursor-pointer hover:brightness-105 athletic-btn"
               >
                 <Send className="w-4 h-4" />
                 TRANSMIT FEEDBACK TO MANAGEMENT
