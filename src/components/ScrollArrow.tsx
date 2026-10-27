@@ -33,11 +33,11 @@ export default function ScrollArrow({
           aria-label="Scroll to next page"
           className="group relative flex flex-col items-center focus:outline-none cursor-pointer"
         >
-          {/* Button circle with icon - clean architectural, no pinging halo */}
+          {/* Glass Button circle with icon */}
           <motion.div
-            className="relative w-11 h-11 rounded-full bg-[var(--theme-surface)] border border-[var(--theme-border)] group-hover:border-[var(--theme-accent)] flex items-center justify-center text-[var(--theme-text-main)] group-hover:text-[var(--theme-accent)] transition-all shadow-sm backdrop-blur-md"
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
+            className="relative w-12 h-12 rounded-full glass-panel border border-[var(--theme-glass-border)] group-hover:border-[var(--theme-accent)] flex items-center justify-center text-[var(--theme-text-main)] group-hover:text-[var(--theme-accent)] transition-all shadow-lg"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.94 }}
           >
             <motion.div
               animate={{
@@ -54,10 +54,10 @@ export default function ScrollArrow({
           </motion.div>
 
           {/* Micro text label */}
-          <div className="mt-2.5 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--theme-accent)]" />
+          <div className="mt-2.5 flex items-center gap-2 px-3 py-1 rounded-full glass-badge border border-[var(--theme-glass-border)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--theme-accent)] animate-live-pulse" />
             <span className="text-[10px] font-mono tracking-[0.2em] text-[var(--theme-text-muted)] group-hover:text-[var(--theme-text-main)] transition-colors uppercase">
-              {label} {pageNumber && <span className="opacity-60 font-normal">({pageNumber})</span>}
+              {label} {pageNumber && <span className="opacity-70 font-normal">({pageNumber})</span>}
             </span>
           </div>
         </button>
@@ -70,7 +70,7 @@ export default function ScrollArrow({
       <button
         onClick={handleClick}
         aria-label="Scroll to next section"
-        className="group inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-[var(--theme-surface)] border border-[var(--theme-border)] hover:border-[var(--theme-accent)] transition-all cursor-pointer backdrop-blur-md shadow-xs"
+        className="group inline-flex items-center gap-3 px-5 py-2.5 rounded-full glass-panel border border-[var(--theme-glass-border)] hover:border-[var(--theme-accent)] transition-all cursor-pointer shadow-md"
       >
         <span className="text-[11px] font-mono tracking-widest text-[var(--theme-text-muted)] group-hover:text-[var(--theme-text-main)] transition-colors uppercase">
           {label}

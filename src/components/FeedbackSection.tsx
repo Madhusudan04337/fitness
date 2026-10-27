@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { MessageSquare, Star, Send, CheckCircle2, ThumbsUp, Sparkles, RefreshCw } from 'lucide-react';
-
-interface FeedbackData {
-  category: string;
-  rating: number;
-  name: string;
-  email: string;
-  memberId: string;
-  tags: string[];
-  message: string;
-  recommend: 'yes' | 'neutral' | 'no';
-}
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  MessageSquare,
+  Star,
+  Send,
+  CheckCircle2,
+  RefreshCw,
+  Sparkles,
+} from 'lucide-react';
 
 const CATEGORIES = [
   'Equipment & Rigs',
@@ -53,8 +50,6 @@ export default function FeedbackSection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!message.trim() && selectedTags.length === 0) return;
-
-    // Generate random technical reference code
     const receiptCode = `HYPER-FB-${Math.floor(1000 + Math.random() * 9000)}`;
     setDispatchReceipt(receiptCode);
     setSubmitted(true);
@@ -73,33 +68,46 @@ export default function FeedbackSection() {
   return (
     <section
       id="feedback"
-      className="relative w-full py-16 lg:py-24 px-4 sm:px-6 lg:px-12 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300 animate-quick-fade"
+      className="relative w-full py-16 lg:py-24 px-4 sm:px-6 lg:px-12 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300"
     >
       <div className="max-w-4xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[var(--theme-surface)] border border-[var(--theme-border)] text-[11px] font-mono tracking-[0.25em] text-[var(--theme-accent)] uppercase mb-3 shadow-xs">
+        {/* Section Header with Scroll Entrance */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-2xl mx-auto mb-12"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-badge border border-[var(--theme-glass-border)] text-xs font-mono tracking-[0.25em] text-[var(--theme-accent)] uppercase mb-3 font-semibold shadow-xs">
             <MessageSquare className="w-3.5 h-3.5" />
-            <span>MEMBER FEEDBACK & SUGGESTIONS</span>
+            <span>MEMBER COMMUNICATIONS</span>
           </div>
 
-          <h2 className="font-heading text-3xl sm:text-5xl font-black uppercase tracking-tight text-[var(--theme-text-main)] leading-tight mb-4">
-            MEMBER <span className="text-[var(--theme-accent)]">FEEDBACK</span>
+          <h2 className="font-heading text-3xl sm:text-5xl font-black uppercase tracking-tight text-[var(--theme-text-main)] leading-tight mb-3">
+            YOUR FEEDBACK <br />
+            <span className="text-[var(--theme-accent)]">SHAPES OUR FLOOR.</span>
           </h2>
 
-          <p className="text-sm sm:text-base text-[var(--theme-text-muted)] leading-relaxed font-light">
-            Help us maintain the highest standard of athletic training and contrast recovery. Your thoughts route directly to our facility director.
+          <p className="text-sm sm:text-base text-[var(--theme-text-muted)] font-light leading-relaxed">
+            Every submission is dispatched directly to our Indiranagar club director and reviewed during our weekly staff meeting.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Interactive Form or Confirmation Card */}
-        <div className="rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] backdrop-blur-md shadow-xl overflow-hidden p-6 sm:p-10">
+        {/* Frosted Glass Form Container */}
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-3xl glass-panel p-6 sm:p-10 shadow-2xl relative overflow-hidden glass-card text-left"
+        >
           {!submitted ? (
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {/* 1. Category Selector */}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* 1. Category Selection */}
               <div>
-                <label className="block text-xs font-mono font-bold tracking-widest text-[var(--theme-text-muted)] uppercase mb-3">
-                  1. Focus Area
+                <label className="block text-xs font-mono font-bold tracking-widest text-[var(--theme-text-muted)] uppercase mb-2.5">
+                  1. Focus Department
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {CATEGORIES.map((cat) => (
@@ -107,10 +115,10 @@ export default function FeedbackSection() {
                       key={cat}
                       type="button"
                       onClick={() => setCategory(cat)}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                      className={`text-xs font-mono px-3.5 py-2 rounded-xl transition-all cursor-pointer ${
                         category === cat
-                          ? 'bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)] shadow-xs'
-                          : 'bg-[var(--theme-surface-solid)] text-[var(--theme-text-muted)] border border-[var(--theme-border)] hover:border-[var(--theme-accent)] hover:text-[var(--theme-text-main)]'
+                          ? 'bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)] font-bold shadow-md'
+                          : 'glass-badge text-[var(--theme-text-muted)] hover:text-[var(--theme-text-main)]'
                       }`}
                     >
                       {cat}
@@ -119,8 +127,8 @@ export default function FeedbackSection() {
                 </div>
               </div>
 
-              {/* 2. Rating Selector */}
-              <div className="p-4 sm:p-5 rounded-xl bg-[var(--theme-bg)] border border-[var(--theme-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              {/* 2. Rating Selector in Glass Container */}
+              <div className="p-4 sm:p-5 rounded-2xl glass-panel-subtle border border-[var(--theme-glass-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <div className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--theme-text-muted)]">
                     2. Overall Facility Rating
@@ -144,7 +152,7 @@ export default function FeedbackSection() {
                         onClick={() => setRating(star)}
                         onMouseEnter={() => setHoverRating(star)}
                         onMouseLeave={() => setHoverRating(null)}
-                        className="p-1 focus:outline-none cursor-pointer transition-transform hover:scale-110"
+                        className="p-1 focus:outline-none cursor-pointer transition-transform hover:scale-115"
                         aria-label={`Rate ${star} of 5 stars`}
                       >
                         <Star
@@ -157,7 +165,7 @@ export default function FeedbackSection() {
                       </button>
                     );
                   })}
-                  <span className="ml-2 font-mono text-sm font-bold text-[var(--theme-text-main)]">
+                  <span className="ml-2 font-mono text-sm font-bold text-[var(--theme-text-main)] tabular-nums">
                     {rating}.0
                   </span>
                 </div>
@@ -178,12 +186,11 @@ export default function FeedbackSection() {
                         onClick={() => toggleTag(tag)}
                         className={`text-[11px] font-mono px-3 py-1.5 rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
                           isSelected
-                            ? 'bg-[var(--theme-accent-badge)] border-[var(--theme-accent)] text-[var(--theme-accent)] font-bold'
-                            : 'bg-[var(--theme-bg)] border-[var(--theme-border)] text-[var(--theme-text-muted)] hover:border-[var(--theme-border-hover)] hover:text-[var(--theme-text-main)]'
+                            ? 'bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)] border-[var(--theme-accent)] font-semibold shadow-xs'
+                            : 'glass-badge text-[var(--theme-text-muted)] hover:text-[var(--theme-text-main)] hover:border-[var(--theme-accent)]'
                         }`}
                       >
-                        <span>{isSelected ? '✓' : '+'}</span>
-                        <span>{tag}</span>
+                        {tag}
                       </button>
                     );
                   })}
@@ -206,7 +213,7 @@ export default function FeedbackSection() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Tell us what worked well or what equipment/amenity could be upgraded. E.g., 'The 4°C cold plunge has been great for leg day recovery, but an extra bench by the Eleiko rack would help...'"
-                  className="w-full p-4 rounded-xl bg-[var(--theme-bg)] border border-[var(--theme-border)] focus:border-[var(--theme-accent)] focus:outline-none text-sm text-[var(--theme-text-main)] placeholder-[var(--theme-text-muted)]/50 font-sans leading-relaxed transition-colors resize-none"
+                  className="w-full p-4 rounded-xl glass-input text-sm text-[var(--theme-text-main)] placeholder-[var(--theme-text-muted)]/50 font-sans leading-relaxed resize-none"
                 />
               </div>
 
@@ -221,7 +228,7 @@ export default function FeedbackSection() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Rahul S."
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--theme-bg)] border border-[var(--theme-border)] focus:border-[var(--theme-accent)] focus:outline-none text-sm text-[var(--theme-text-main)] placeholder-[var(--theme-text-muted)]/50 font-sans transition-colors"
+                    className="w-full px-3.5 py-2.5 rounded-xl glass-input text-sm"
                   />
                 </div>
 
@@ -234,7 +241,7 @@ export default function FeedbackSection() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="For follow-up response"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--theme-bg)] border border-[var(--theme-border)] focus:border-[var(--theme-accent)] focus:outline-none text-sm text-[var(--theme-text-main)] placeholder-[var(--theme-text-muted)]/50 font-sans transition-colors"
+                    className="w-full px-3.5 py-2.5 rounded-xl glass-input text-sm"
                   />
                 </div>
 
@@ -247,13 +254,13 @@ export default function FeedbackSection() {
                     value={memberId}
                     onChange={(e) => setMemberId(e.target.value)}
                     placeholder="e.g. HF-2024-41"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--theme-bg)] border border-[var(--theme-border)] focus:border-[var(--theme-accent)] focus:outline-none text-sm text-[var(--theme-text-main)] placeholder-[var(--theme-text-muted)]/50 font-mono transition-colors"
+                    className="w-full px-3.5 py-2.5 rounded-xl glass-input text-sm font-mono"
                   />
                 </div>
               </div>
 
               {/* 6. Recommendation Question */}
-              <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-[var(--theme-border)]">
+              <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-[var(--theme-glass-border)]">
                 <span className="text-xs text-[var(--theme-text-muted)] font-mono">
                   Would you recommend Hyperfit to an athletic peer?
                 </span>
@@ -266,7 +273,7 @@ export default function FeedbackSection() {
                       className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-colors cursor-pointer ${
                         recommend === opt
                           ? 'bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)]'
-                          : 'bg-[var(--theme-bg)] text-[var(--theme-text-muted)] border border-[var(--theme-border)] hover:border-[var(--theme-accent)]'
+                          : 'glass-badge text-[var(--theme-text-muted)] hover:border-[var(--theme-accent)]'
                       }`}
                     >
                       {opt === 'yes' ? 'Definitely (Yes)' : opt === 'neutral' ? 'Maybe' : 'Unlikely'}
@@ -278,7 +285,7 @@ export default function FeedbackSection() {
               {/* Submit CTA */}
               <button
                 type="submit"
-                className="w-full py-4 rounded-xl bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)] font-mono font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg cursor-pointer hover:brightness-105 athletic-btn"
+                className="w-full py-4 rounded-xl bg-[var(--theme-accent)] text-[var(--theme-accent-contrast)] font-mono font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl shadow-[var(--theme-accent-glow)] cursor-pointer hover:brightness-105 athletic-btn"
               >
                 <Send className="w-4 h-4" />
                 TRANSMIT FEEDBACK TO MANAGEMENT
@@ -309,7 +316,7 @@ export default function FeedbackSection() {
                   {selectedTags.map((t) => (
                     <span
                       key={t}
-                      className="px-2.5 py-1 rounded bg-[var(--theme-bg)] border border-[var(--theme-border)] text-[10px] font-mono text-[var(--theme-text-main)]"
+                      className="px-2.5 py-1 rounded glass-badge text-[10px] font-mono text-[var(--theme-text-main)]"
                     >
                       {t}
                     </span>
@@ -317,7 +324,7 @@ export default function FeedbackSection() {
                 </div>
               )}
 
-              <div className="p-4 rounded-xl bg-[var(--theme-bg)] border border-[var(--theme-border)] text-xs text-[var(--theme-text-muted)] max-w-md mb-8 text-left font-mono">
+              <div className="p-4 rounded-2xl glass-panel-subtle text-xs text-[var(--theme-text-muted)] max-w-md mb-8 text-left font-mono">
                 <div className="flex items-center gap-2 text-[var(--theme-accent)] font-bold mb-1">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>DIRECTOR COMMITMENT</span>
@@ -327,14 +334,14 @@ export default function FeedbackSection() {
 
               <button
                 onClick={handleReset}
-                className="px-6 py-3 rounded-xl border border-[var(--theme-border)] bg-[var(--theme-surface-solid)] hover:border-[var(--theme-accent)] text-[var(--theme-text-main)] font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors"
+                className="px-6 py-3 rounded-xl glass-panel hover:border-[var(--theme-accent)] text-[var(--theme-text-main)] font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors"
               >
                 <RefreshCw className="w-3.5 h-3.5 text-[var(--theme-accent)]" />
                 SUBMIT ANOTHER NOTE
               </button>
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

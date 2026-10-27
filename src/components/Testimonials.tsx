@@ -1,31 +1,34 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Quote } from 'lucide-react';
+import { Quote, Star } from 'lucide-react';
 
 const testimonials = [
   {
     name: 'DEEPA KHAN',
-    role: 'Product Designer',
-    date: 'May 2024',
+    role: 'Product Designer at FinTech Studio',
+    date: 'Member since 2024',
     rating: '5.0',
-    quote: 'When I started, I was nervous about lifting weights. But the coaches made me feel completely comfortable from day one, fixed my form, and helped me build confidence without any injuries.',
-    tags: ['Personal Training', 'Mobility'],
+    quote:
+      'When I started, I was anxious around Olympic barbells. The coaching team corrected my hip hinge within three sessions, eliminated my chronic lower-back strain, and helped me deadlift 1.5x bodyweight with confidence.',
+    tags: ['Personal Coaching', 'Mobility Protocol'],
   },
   {
     name: 'MARCUS VANCE',
-    role: 'Software Engineer',
-    date: 'August 2024',
+    role: 'Staff Engineer & Marathon Runner',
+    date: 'Member since 2023',
     rating: '5.0',
-    quote: 'Hyperfit changed how I look at training. The coaches take time to understand your pace, tailor your weekly workouts, and keep you accountable every step of the way.',
-    tags: ['Strength Training', 'Conditioning'],
+    quote:
+      'Hyperfit redefined how I view recovery. The contrast sauna and cold plunge suites cut my marathon recovery latency in half. The facility is never overcrowded and the attention to detail is second to none.',
+    tags: ['Contrast Therapy', 'Conditioning'],
   },
   {
     name: 'PRIYA SHARMA',
-    role: 'Marketing Director',
-    date: 'November 2024',
+    role: 'Managing Director, Venture Capital',
+    date: 'Member since 2024',
     rating: '5.0',
-    quote: 'The Indiranagar facility is exceptionally clean, well-equipped, and never overcrowded. The coaches are attentive and the recovery sauna makes all the difference after a hard workout.',
-    tags: ['Free Weights', 'Recovery'],
+    quote:
+      'The Indiranagar hub is immaculate, rigorously maintained, and capped at 250 members. You never have to wait for an Eleiko rack or dumbbell pair. It is the premier training environment in South India.',
+    tags: ['Eleiko Platforms', 'Nutrition Tracking'],
   },
 ];
 
@@ -33,55 +36,63 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="py-16 lg:py-24 px-6 bg-[var(--theme-bg)] text-[var(--theme-text-main)] overflow-hidden transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
+        {/* Header with Scroll Entrance */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-2xl mx-auto mb-14"
         >
-          <div className="text-[var(--theme-accent)] text-xs font-mono tracking-[0.25em] mb-3 uppercase font-semibold">
-            MEMBER REVIEWS
+          <div className="inline-block px-3 py-1 rounded-full glass-badge border border-[var(--theme-glass-border)] text-[var(--theme-accent)] text-xs font-mono tracking-[0.25em] mb-3 uppercase font-semibold">
+            ATHLETE VOICES
           </div>
-
           <h2 className="font-heading text-4xl sm:text-5xl font-black mb-3 tracking-tight leading-tight">
-            BECAUSE STAYING FIT<br />
-            <span className="text-[var(--theme-accent)]">SHOULD FEEL GOOD.</span>
+            BECAUSE PERFORMANCE <br />
+            <span className="text-[var(--theme-accent)]">IS MEASURED IN REAL LIFE.</span>
           </h2>
-
-          <p className="text-[var(--theme-text-muted)] text-base font-light">
-            Just a high-standard community where you can grow — your way.
+          <p className="text-[var(--theme-text-muted)] text-sm sm:text-base font-light">
+            Read unprompted testimonials from dedicated athletes and working professionals in our Indiranagar club.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((item, index) => (
+        {/* Testimonials Glass Cards Grid with Staggered Scroll Transition */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          {testimonials.map((test, index) => (
             <motion.div
-              key={item.name}
-              initial={{ opacity: 0, y: 30 }}
+              key={test.name}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 0.45, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative p-7 rounded-2xl border border-[var(--theme-border)] bg-[var(--theme-surface)] hover:border-[var(--theme-accent)] flex flex-col justify-between shadow-sm cursor-default athletic-card"
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              className="p-7 sm:p-8 rounded-3xl glass-card flex flex-col justify-between text-left relative overflow-hidden"
             >
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex text-[var(--theme-accent)] text-sm tracking-wider font-mono font-bold">
-                    ★★★★★ <span className="ml-2 text-[var(--theme-text-muted)] text-xs">{item.rating}</span>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="w-10 h-10 rounded-xl glass-badge flex items-center justify-center border border-[var(--theme-glass-border)]">
+                    <Quote className="w-5 h-5 text-[var(--theme-accent)]" />
                   </div>
-                  <Quote className="w-5 h-5 text-[var(--theme-accent)] opacity-70" />
+                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-full glass-badge text-[11px] font-mono font-bold text-[var(--theme-text-main)]">
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    <span>{test.rating}</span>
+                  </div>
                 </div>
-                <p className="font-quote text-base sm:text-lg text-[var(--theme-text-main)] leading-relaxed mb-6 opacity-95">
-                  "{item.quote}"
-                </p>
+
+                <blockquote className="font-quote text-sm sm:text-base text-[var(--theme-text-main)] leading-relaxed mb-6 font-light">
+                  "{test.quote}"
+                </blockquote>
               </div>
 
-              <div className="pt-4 border-t border-[var(--theme-border)]">
-                <div className="font-heading font-black text-[var(--theme-text-main)] text-base tracking-wide">{item.name}</div>
-                <div className="text-xs text-[var(--theme-text-muted)] font-mono mt-0.5">{item.role} • {item.date}</div>
-                <div className="flex flex-wrap gap-1.5 mt-3">
-                  {item.tags.map((t) => (
-                    <span key={t} className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[var(--theme-bg)] border border-[var(--theme-border)] text-[var(--theme-text-muted)]">
+              <div className="pt-4 border-t border-[var(--theme-glass-border)]">
+                <div className="font-heading text-lg font-black text-[var(--theme-text-main)] tracking-tight">
+                  {test.name}
+                </div>
+                <div className="text-xs text-[var(--theme-text-muted)] font-light mb-2">
+                  {test.role}
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {test.tags.map((t, idx) => (
+                    <span key={idx} className="text-[10px] font-mono text-[var(--theme-accent)] px-2 py-0.5 rounded-full glass-badge">
                       {t}
                     </span>
                   ))}
